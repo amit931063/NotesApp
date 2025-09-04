@@ -101,7 +101,7 @@ public class NoteController {
         note.setUpdatedAt(Instant.now());
         note.setShareId(UUID.randomUUID().toString());
         note.setSharedAt(Instant.now());
-        Note saved = noteRepository.save( note);
+        Note saved = noteRepository.save(note);
         return ResponseEntity.ok(saved);
     }
 

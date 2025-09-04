@@ -1,13 +1,10 @@
 package com.NotesApp.NotesApp.controllers;
-import com.NotesApp.NotesApp.models.ERole;
-import com.NotesApp.NotesApp.models.Role;
 import com.NotesApp.NotesApp.models.User;
-import com.NotesApp.NotesApp.payloads.LoginRequest;
+import com.NotesApp.NotesApp.payloads.request.LoginRequest;
 import com.NotesApp.NotesApp.payloads.request.SignUpRequest;
 import com.NotesApp.NotesApp.payloads.request.TokenRefreshRequest;
 import com.NotesApp.NotesApp.payloads.response.JwtResponse;
 import com.NotesApp.NotesApp.payloads.response.MessageResponse;
-import com.NotesApp.NotesApp.repositories.RoleRepository;
 import com.NotesApp.NotesApp.repositories.UserRepository;
 import com.NotesApp.NotesApp.security.jwt.JwtUtils;
 import com.NotesApp.NotesApp.services.PasswordResetService;
@@ -281,7 +278,7 @@ public class AuthController {
 //
 //        Set<Role> roles = new HashSet<>();
 //
-//        // 🔐 Check if the email belongs to the company admin list
+//        //  Check if the email belongs to the company admin list
 //        String email = signUpRequest.getEmail();
 //        if (email.toLowerCase().endsWith("@company.com")) {
 //            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
@@ -450,7 +447,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    // ✅ LOGIN (username or email)
+    //  LOGIN (username or email)
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 //        String loginInput = loginRequest.getUsername(); // may be username or email
@@ -489,7 +486,7 @@ public class AuthController {
 //        // Refresh token
 //        String refreshToken = jwtUtils.generateRefreshToken(userDetailsImp.getUsername());
 //
-//        // ✅ Return without roles
+//        //  Return without roles
 //        return ResponseEntity.ok(new JwtResponse(
 //                jwt,
 //                refreshToken,
@@ -519,7 +516,7 @@ public class AuthController {
         // Authenticate always with username (Spring Security requires a unique username)
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getUsername(), // ✅ always username
+                        user.getUsername(), //  always username
                         password
                 )
         );
@@ -535,7 +532,7 @@ public class AuthController {
         // Generate refresh token
         String refreshToken = jwtUtils.generateRefreshToken(userDetailsImp.getUsername());
 
-        // ✅ Return response without roles
+        //  Return response without roles
         return ResponseEntity.ok(new JwtResponse(
                 jwt,
                 refreshToken,
@@ -545,7 +542,7 @@ public class AuthController {
         ));
     }
 
-    // ✅ SIGNUP (no role assignment)
+    //  SIGNUP (no role assignment)
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -572,7 +569,7 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    // ✅ REFRESH TOKEN
+    //  REFRESH TOKEN
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
         String refreshToken = request.getRefreshToken();
@@ -587,7 +584,7 @@ public class AuthController {
             // Generate new access token
             String newAccessToken = jwtUtils.generateJwtTokenFromUsername(username);
 
-            // ✅ Return without roles
+            //  Return without roles
             return ResponseEntity.ok(new JwtResponse(
                     newAccessToken,
                     refreshToken,
@@ -601,7 +598,7 @@ public class AuthController {
         }
     }
 
-    // ✅ FORGOT / RESET PASSWORD
+    //  FORGOT / RESET PASSWORD
     @Autowired
     private PasswordResetService resetService;
 
