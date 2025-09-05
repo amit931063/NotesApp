@@ -96,13 +96,17 @@ public class NoteController {
 
     @PostMapping
     public ResponseEntity<Note> create(@RequestBody Note note) {
-        note.setUser(getCurrentUser());
-        note.setCreatedAt(Instant.now());
-        note.setUpdatedAt(Instant.now());
-        note.setShareId(UUID.randomUUID().toString());
-        note.setSharedAt(Instant.now());
-        Note saved = noteRepository.save(note);
-        return ResponseEntity.ok(saved);
+        // note.setUser(getCurrentUser());
+        // note.setCreatedAt(Instant.now());
+        // note.setUpdatedAt(Instant.now());
+        // note.setShareId(UUID.randomUUID().toString());
+        // note.setSharedAt(Instant.now());
+        // Note saved = noteRepository.save(note);
+        // return ResponseEntity.ok(saved);
+            note.setUserId(((UserDetailsImpl) authentication.getPrincipal()).getId());
+
+    Note saved = noteRepository.save(note);
+    return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/{id}")
