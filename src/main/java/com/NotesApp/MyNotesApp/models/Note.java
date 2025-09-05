@@ -8,6 +8,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "notes")
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
