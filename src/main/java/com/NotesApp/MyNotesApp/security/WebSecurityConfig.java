@@ -79,14 +79,27 @@ public class WebSecurityConfig {
 
  @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://notes-app-frontend-iota-three.vercel.app"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        // CorsConfiguration configuration = new CorsConfiguration();
+        // configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://notes-app-frontend-iota-three.vercel.app"));
+        // configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // configuration.setAllowedHeaders(Arrays.asList("*"));
+        // configuration.setAllowCredentials(true);
+        // UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // source.registerCorsConfiguration("/**", configuration);
+        // return source;
+
+         CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList(
+        "http://localhost:5173",
+        "https://notes-app-frontend-iota-three.vercel.app"
+    ));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setExposedHeaders(Arrays.asList("Authorization")); // If you return JWT in headers
+    configuration.setAllowCredentials(true);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
     }
     
     
@@ -108,20 +121,36 @@ public class WebSecurityConfig {
 
 //        return http.build();
 
-            http
+            // http
                 
-                    .csrf(csrf -> csrf.disable())
-                .cors(cors->{})
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/auth/**").permitAll()
-                            .requestMatchers("/api/notes/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
-                            .requestMatchers("/ws-notifications/**").permitAll()
-                            .requestMatchers("/topic/**").permitAll()
-                            .anyRequest().authenticated()
-                    );
+            //         .csrf(csrf -> csrf.disable())
+            //     .cors(cors->{})
+            //         .authorizeHttpRequests(auth -> auth
+            //                 .requestMatchers("/api/auth/**").permitAll()
+            //                 .requestMatchers("/api/notes/**").permitAll()
+            //                     .requestMatchers("/api/test/**").permitAll()
+            //                 .requestMatchers("/ws-notifications/**").permitAll()
+            //                 .requestMatchers("/topic/**").permitAll()
+            //                 .anyRequest().authenticated()
+            //         );
 
-            return http.build();
+            // return http.build();
+
+        http
+        .csrf(csrf -> csrf.disable())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/test/**").permitAll()
+            .anyRequest().authenticated()
+        );
+
+    http.authenticationProvider(authenticationProvider());
+    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+
+        
         }
 
     @Bean
