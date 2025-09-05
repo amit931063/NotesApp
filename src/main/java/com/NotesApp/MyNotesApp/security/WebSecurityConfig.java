@@ -107,6 +107,7 @@ public class WebSecurityConfig {
 
             http
                     .csrf(csrf -> csrf.disable())
+                .cors(cors->{})
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/notes/**").permitAll()
