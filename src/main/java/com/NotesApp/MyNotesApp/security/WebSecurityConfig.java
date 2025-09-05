@@ -1,6 +1,9 @@
 package com.NotesApp.NotesApp.security;
 
-
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
 import com.NotesApp.NotesApp.security.jwt.AuthEntryPointJwt;
 import com.NotesApp.NotesApp.security.jwt.AuthTokenFilter;
 import com.NotesApp.NotesApp.services.UserDetailsServiceImpl;
@@ -90,34 +93,35 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable())
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(auth ->
-//                        auth.requestMatchers("/api/auth/**").permitAll()
-////                                .requestMatchers("/api/test/**").permitAll()
-//                                .anyRequest().authenticated()
-//                );
-//
-//        http.authenticationProvider(authenticationProvider());
-//
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
+       http.csrf(csrf -> csrf.disable())
+               .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+               .authorizeHttpRequests(auth ->
+                       auth.requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers("/api/test/**").permitAll()
+                               .anyRequest().authenticated()
+               );
 
-            http
-                    .csrf(csrf -> csrf.disable())
-                .cors(cors->{})
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/auth/**").permitAll()
-                            .requestMatchers("/api/notes/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
-                            .requestMatchers("/ws-notifications/**").permitAll()
-                            .requestMatchers("/topic/**").permitAll()
-                            .anyRequest().authenticated()
-                    );
+       http.authenticationProvider(authenticationProvider());
 
-            return http.build();
+       http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+       return http.build();
+
+            // http
+                
+            //         .csrf(csrf -> csrf.disable())
+            //     .cors(cors->{})
+            //         .authorizeHttpRequests(auth -> auth
+            //                 .requestMatchers("/api/auth/**").permitAll()
+            //                 .requestMatchers("/api/notes/**").permitAll()
+            //                     .requestMatchers("/api/test/**").permitAll()
+            //                 .requestMatchers("/ws-notifications/**").permitAll()
+            //                 .requestMatchers("/topic/**").permitAll()
+            //                 .anyRequest().authenticated()
+            //         );
+
+            // return http.build();
         }
 
     @Bean
