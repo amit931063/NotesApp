@@ -14,7 +14,6 @@ public class Note {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-      @JsonIgnore
     private User user;
     @Column(columnDefinition = "text")
     private String title;
