@@ -155,7 +155,7 @@ public class NoteController {
             noteRepository.save(note);
         }
 
-        String shareUrl = "https://your-frontend.vercel.app/n/" + note.getPublicId();
+        String shareUrl = "https://notes-app-frontend-iota-three.vercel.app/login/n/" + note.getPublicId();
         return ResponseEntity.ok(Map.of("shareUrl", shareUrl));
     }
 
